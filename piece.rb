@@ -16,46 +16,89 @@ class Piece
 
   def be_captured
   end
+
+  def in_bounds?(pos)
+    pos.all? { |point| point.between?(0,7)}
+  end
 end
 
 class SlidingPiece < Piece
+
+  def moves
+  end
 
 end
 
 class SteppingPiece < Piece
 
+  def moves
+    row_orig, col_orig = pos
+    DELTAS.map do |d_row, d_col|
+      new_move = [row_orig + d_row, col_orig + d_col]
+      in_bounds?(new_move) ? new_move : next
+    end
+  end
+
 end
 
 class Queen < SlidingPiece
+  DELTAS = [
+     [-1, -1],
+     [-1,  0],
+     [-1,  1],
+     [ 0,  1],
+     [ 0, -1],
+     [ 1, -1],
+     [ 1,  0],
+     [ 1,  1]
+   ]
 end
 
 class Bishop < SlidingPiece
+  DELTAS = [
+    [ 1,  1],
+    [-1, -1],
+    [ 1, -1],
+    [-1,  1]
+  ]
+
 end
 
 class Rook < SlidingPiece
+  DELTAS = [
+    [ 0,  1],
+    [ 0, -1],
+    [-1,  0],
+    [ 1,  0]
+  ]
 end
 
 class Knight < SteppingPiece
+  DELTAS = [
+    [-2, -1],
+    [-2,  1],
+    [-1, -2],
+    [-1,  2],
+    [ 1, -2],
+    [ 1,  2],
+    [ 2, -1],
+    [ 2,  1]
+  ]
 end
 
 class King < SteppingPiece
-  KING_DELTAS = [
-           [-1, -1],
-           [-1, 0],
-           [-1, 1],
-           [0, 1],
-           [0, -1],
-           [1, -1],
-           [1, 0],
-           [1, 1]
-         ]
+  DELTAS = [
+     [-1, -1],
+     [-1,  0],
+     [-1,  1],
+     [ 0,  1],
+     [ 0, -1],
+     [ 1, -1],
+     [ 1,  0],
+     [ 1,  1]
+   ]
 
-  def moves
-    row_orig, col_orig = pos
-    KING_DELTAS.map do |d_row, d_col|
-      [row_orig + d_row, col_orig + d_col]
-    end
-  end
+
 end
 
 class Pawn < Piece
