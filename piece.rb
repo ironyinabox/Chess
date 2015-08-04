@@ -25,6 +25,18 @@ end
 class SlidingPiece < Piece
 
   def moves
+    result = []
+    row_orig, col_orig = pos
+    DELTAS.each do |d_row, d_col|
+      row_new, col_new  = row_orig + d_row, col_orig + d_col
+      new_move = [row_new, col_new]
+      while in_bounds?(new_move)
+        result << new_move
+        row_new += d_row
+        col_new += d_col
+        new_move = [row_new, col_new]
+      end
+    end
   end
 
 end
