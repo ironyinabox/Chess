@@ -2,7 +2,7 @@
 class Piece
   attr_accessor :pos, :board, :color
 
-  def initilaize(pos, board, color)
+  def initialize(pos, board=nil, color = :white)
     @pos = pos
     @board = board
     @color = color
@@ -27,7 +27,7 @@ class SlidingPiece < Piece
   def moves
     result = []
     row_orig, col_orig = pos
-    DELTAS.each do |d_row, d_col|
+    self.class::DELTAS.each do |d_row, d_col|
       row_new, col_new  = row_orig + d_row, col_orig + d_col
       new_move = [row_new, col_new]
       while in_bounds?(new_move)
@@ -45,7 +45,7 @@ class SteppingPiece < Piece
 
   def moves
     row_orig, col_orig = pos
-    DELTAS.map do |d_row, d_col|
+    self.class::DELTAS.map do |d_row, d_col|
       new_move = [row_orig + d_row, col_orig + d_col]
       in_bounds?(new_move) ? new_move : next
     end
