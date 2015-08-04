@@ -73,7 +73,3 @@ class Board
     grid.transpose
   end
 end
-
-
-test = Board.new
-test.render
