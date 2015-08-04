@@ -1,8 +1,9 @@
 
 class Piece
+  
   attr_accessor :pos, :board, :color
 
-  def initialize(pos, board=nil, color = :white)
+  def initialize(pos, board=nil, color = nil)
     @pos = pos
     @board = board
     @color = color
@@ -64,6 +65,10 @@ class Queen < SlidingPiece
      [ 1,  0],
      [ 1,  1]
    ]
+
+   def to_s
+     "Q"
+   end
 end
 
 class Bishop < SlidingPiece
@@ -74,6 +79,10 @@ class Bishop < SlidingPiece
     [-1,  1]
   ]
 
+  def to_s
+    "B"
+  end
+
 end
 
 class Rook < SlidingPiece
@@ -83,6 +92,10 @@ class Rook < SlidingPiece
     [-1,  0],
     [ 1,  0]
   ]
+
+  def to_s
+    "R"
+  end
 end
 
 class Knight < SteppingPiece
@@ -96,6 +109,10 @@ class Knight < SteppingPiece
     [ 2, -1],
     [ 2,  1]
   ]
+
+  def to_s
+    "N"
+  end
 end
 
 class King < SteppingPiece
@@ -109,9 +126,14 @@ class King < SteppingPiece
      [ 1,  0],
      [ 1,  1]
    ]
-
+   def to_s
+     "K"
+   end
 
 end
 
 class Pawn < Piece
+  def to_s
+    "P"
+  end
 end
