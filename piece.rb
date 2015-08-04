@@ -1,12 +1,17 @@
 
+require 'colorize'
 class Piece
-  
+
   attr_accessor :pos, :board, :color
 
   def initialize(pos, board=nil, color = nil)
     @pos = pos
     @board = board
     @color = color
+  end
+
+  def set_color(color)
+    self.color = color
   end
 
   def moves
@@ -20,6 +25,14 @@ class Piece
 
   def in_bounds?(pos)
     pos.all? { |point| point.between?(0,7)}
+  end
+
+  def colorize_output(str)
+    if color == :white
+      str.colorize(:color => :red, :mode => :bold)
+    else
+      str.colorize(:color => :black, :mode => :bold)
+    end
   end
 end
 
@@ -67,7 +80,7 @@ class Queen < SlidingPiece
    ]
 
    def to_s
-     "Q"
+     colorize_output("Q")
    end
 end
 
@@ -80,7 +93,7 @@ class Bishop < SlidingPiece
   ]
 
   def to_s
-    "B"
+    colorize_output("B")
   end
 
 end
@@ -94,7 +107,7 @@ class Rook < SlidingPiece
   ]
 
   def to_s
-    "R"
+    colorize_output("R")
   end
 end
 
@@ -111,7 +124,7 @@ class Knight < SteppingPiece
   ]
 
   def to_s
-    "N"
+    colorize_output("N")
   end
 end
 
@@ -127,13 +140,13 @@ class King < SteppingPiece
      [ 1,  1]
    ]
    def to_s
-     "K"
+     colorize_output("K")
    end
 
 end
 
 class Pawn < Piece
   def to_s
-    "P"
+    colorize_output("P")
   end
 end

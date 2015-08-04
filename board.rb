@@ -34,10 +34,15 @@ class Board
         end
       end
     end
-    rows[1].each_with_index { | _, col| self[[1, col]] = Pawn.new([1, col])}
-    rows[6].each_with_index { | _, col| self[[6, col]] = Pawn.new([6, col])}
-
+    rows[1].each_with_index { |_, col| self[[1, col]] = Pawn.new([1, col], self) }
+    rows[6].each_with_index { |_, col| self[[6, col]] = Pawn.new([6, col], self) }
+    assign_color
     nil
+  end
+
+  def assign_color
+    (0..1).each { |idx| rows[idx].each { |piece| piece.set_color(:black)} }
+    (6..7).each { |idx| rows[idx].each { |piece| piece.set_color(:white)} }
   end
 
   def render
@@ -68,3 +73,7 @@ class Board
     grid.transpose
   end
 end
+
+
+test = Board.new
+test.render
