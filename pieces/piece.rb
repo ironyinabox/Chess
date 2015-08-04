@@ -14,7 +14,12 @@ class Piece
     self.color = color
   end
 
-  def moves
+  def move(end_pos)
+    pos = end_pos
+  end
+
+  def move_into_check?(pos)
+    dup_board
   end
 
   def capture(otr_piece)

@@ -41,7 +41,14 @@ class Board
   end
 
   def in_check?(color)
-    find_king(color)
+    king_pos = find_king(color)
+    rows.flatten.each do |node|
+      unless node.nil?
+        return true if node.color != color && node.moves.include?(king_pos)
+      end
+    end
+
+    false
   end
 
   def find_king(color)
@@ -55,6 +62,16 @@ class Board
   def assign_color
     (0..1).each { |idx| rows[idx].each { |piece| piece.set_color(:black)} }
     (6..7).each { |idx| rows[idx].each { |piece| piece.set_color(:white)} }
+  end
+
+  def move(start, end_pos)
+    raise InvalidMoveError if self[start].nil? || !self[start].moves.include?(end_pos)
+
+    self[end_pos] = self[start]
+    self[start] = nil
+    self[end_pos].move(end_pos)
+
+    nil
   end
 
   def render
@@ -77,6 +94,14 @@ class Board
     grid[row][col] = piece
   end
 
+  def deep_dup
+    rows.map do |row|
+      row.map do |tile|
+        tile.dup unless tile.nil?
+      end
+    end
+  end
+
   def rows
     grid
   end
@@ -86,5 +111,5 @@ class Board
   end
 end
 
-test = Board.new
-test.render
+class InvalidMoveError < StandardError
+end
