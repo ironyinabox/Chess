@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'pieces'
 
 class Board
 
@@ -34,8 +34,8 @@ class Board
         end
       end
     end
-    rows[1].each_with_index { |_, col| self[[1, col]] = Pawn.new([1, col], self) }
-    rows[6].each_with_index { |_, col| self[[6, col]] = Pawn.new([6, col], self) }
+    rows[1].each_with_index { |_, col| self[[1, col]] = Pawn.new([1, col], self, nil) }
+    rows[6].each_with_index { |_, col| self[[6, col]] = Pawn.new([6, col], self, nil) }
     assign_color
     nil
   end
@@ -73,3 +73,6 @@ class Board
     grid.transpose
   end
 end
+
+test = Board.new
+test.render
