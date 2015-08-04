@@ -1,5 +1,5 @@
 require_relative 'pieces'
-
+require 'byebug'
 class Board
 
   attr_accessor :grid
@@ -69,7 +69,8 @@ class Board
 
     self[end_pos] = self[start]
     self[start] = nil
-    self[end_pos].move(end_pos)
+
+    self[end_pos].update_pos(end_pos)
 
     nil
   end
@@ -77,7 +78,7 @@ class Board
   def render
     rows.each do |row|
       row.each do |piece|
-        print "#{piece.to_s} "
+        piece.is_a?(Piece) ? (print piece.to_s) : (print "_")
       end
       puts
     end
@@ -95,11 +96,16 @@ class Board
   end
 
   def deep_dup
-    rows.map do |row|
+    dup_board = self.dup
+    dup_grid = rows.map do |row|
       row.map do |tile|
         tile.dup unless tile.nil?
       end
     end
+
+    dup_board.grid = dup_grid
+
+    dup_board
   end
 
   def rows
@@ -113,3 +119,6 @@ end
 
 class InvalidMoveError < StandardError
 end
+
+board = Board.new
+board.render
