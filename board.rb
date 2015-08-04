@@ -40,6 +40,18 @@ class Board
     nil
   end
 
+  def in_check?(color)
+    find_king(color)
+  end
+
+  def find_king(color)
+    rows.flatten.select do |node|
+      unless node.nil?
+        return node.pos if node.is_a?(King) && node.color == color
+      end
+    end
+  end
+
   def assign_color
     (0..1).each { |idx| rows[idx].each { |piece| piece.set_color(:black)} }
     (6..7).each { |idx| rows[idx].each { |piece| piece.set_color(:white)} }
