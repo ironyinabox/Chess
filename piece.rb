@@ -39,6 +39,23 @@ class Knight < SteppingPiece
 end
 
 class King < SteppingPiece
+  KING_DELTAS = [
+           [-1, -1],
+           [-1, 0],
+           [-1, 1],
+           [0, 1],
+           [0, -1],
+           [1, -1],
+           [1, 0],
+           [1, 1]
+         ]
+
+  def moves
+    row_orig, col_orig = pos
+    KING_DELTAS.map do |d_row, d_col|
+      [row_orig + d_row, col_orig + d_col]
+    end
+  end
 end
 
 class Pawn < Piece
