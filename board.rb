@@ -65,7 +65,8 @@ class Board
   end
 
   def move(start, end_pos)
-    raise InvalidMoveError if self[start].nil? || !self[start].moves.include?(end_pos)
+    raise InvalidMoveError if self[start].nil? ||
+    !self[start].valid_moves.include?(end_pos)
 
     self[end_pos] = self[start]
     self[start] = nil
@@ -75,13 +76,27 @@ class Board
     nil
   end
 
+  def move!(start, end_pos)
+    self[end_pos] = self[start]
+    self[start] = nil
+
+    self[end_pos].update_pos(end_pos)
+
+    nil
+  end
+
   def render
-    rows.each do |row|
+    puts "   0 1 2 3 4 5 6 7"
+    puts "  ________________"
+    rows.each_with_index do |row, row_idx|
+      print "#{row_idx} |"
       row.each do |piece|
-        piece.is_a?(Piece) ? (print piece.to_s) : (print "_")
+        piece.is_a?(Piece) ? (print piece.to_s + " ") : (print "_ ")
       end
       puts
+
     end
+    puts
     nil
   end
 
@@ -95,15 +110,13 @@ class Board
     grid[row][col] = piece
   end
 
-  def deep_dup
-    dup_board = self.dup
-    dup_grid = rows.map do |row|
+  def dup
+    dup_board = Board.new
+    dup_board.grid = rows.map do |row|
       row.map do |tile|
-        tile.dup unless tile.nil?
+        tile.dup(dup_board) unless tile.nil?
       end
     end
-
-    dup_board.grid = dup_grid
 
     dup_board
   end
@@ -119,6 +132,3 @@ end
 
 class InvalidMoveError < StandardError
 end
-
-board = Board.new
-board.render

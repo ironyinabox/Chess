@@ -18,20 +18,30 @@ class Piece
     self.pos = end_pos
   end
 
+  def valid_moves
+    moves.reject { |move| move_into_check?(move)}
+  end
+
+  def occupied_by_ally?(move_pos)
+    return false if board[move_pos].nil?
+    board[move_pos].color == self.color
+  end
+
+  def capturable?(move_pos)
+    return true if board[move_pos].nil?
+    board[move_pos].color != self.color
+  end
+
   def move_into_check?(move_pos)
-    dup_board = board.deep_dup
-    dup_board.move(pos, move_pos)
+    return false unless moves.include?(move_pos)
+
+    dup_board = board.dup
+    dup_board.move!(pos, move_pos)
     dup_board.in_check?(color)
   end
 
-  def capture(otr_piece)
-  end
-
-  def be_captured
-  end
-
-  def in_bounds?(pos)
-    pos.all? { |point| point.between?(0,7)}
+  def in_bounds?(move_pos)
+    move_pos.all? { |point| point.between?(0,7)}
   end
 
   def colorize_output(str)
@@ -42,9 +52,14 @@ class Piece
     end
   end
 
-  def calc_new_move(d_row, d_col)
+  def calc_new_move(d_pos)
     row_orig, col_orig = pos
+    d_row, d_col = d_pos
     new_row, new_col = d_row + row_orig, d_col + col_orig
     [new_row, new_col]
+  end
+
+  def dup(dup_board)
+    dup_piece = self.class.new(pos.dup, dup_board, color)
   end
 end
