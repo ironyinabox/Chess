@@ -5,68 +5,60 @@ class Game
 
   def initialize (board = Board.new)
     @board = board
-    players = [:white, :black]
+    @players = [:white, :black]
   end
 
   def run
-    until over?
+    until board.checkmate?(current_player)
       board.render
       play_turn
     end
-  end
 
-  def over?
-    checkmate? || draw?
-  end
-
-  def checkmate?
-    false
-  end
-
-  def draw?
-    false
+    end_game
   end
 
   def play_turn
-    new_move = get_move
-    p new_move
-    board.move(new_move.first, new_move.last)
+    begin
+      new_move = get_move
+      board.move(new_move.first, new_move.last)
+    rescue
+      puts "That is not a valid move"
+      retry
+    end
+
     switch_players!
+  end
+
+  def end_game
+    board.render
+    puts "Congrats, #{players[1]}, you won!"
   end
 
   def get_move
     prompt
-    input = gets.chomp
-
-    until valid_input(input)
-      puts "Not a valid move, please try again"
-      input = gets.chomp
-    end
-
-    convert_input(input)
+    parse_input(gets.chomp)
   end
 
   def prompt
-    puts "Please enter a move: "
+    puts "#{current_player.to_s}: It is your turn!"
+    puts "Please enter a move: (eg. 6040)"
   end
 
   def valid_input(input)
-    true
+    board[input[0]].color == current_player
   end
 
   def current_player
     players.first
   end
 
-  def convert_input(input)
-    formatted_input = input.split("").map{|el| el.to_i}
-    start_pos = formatted_input[0..1]
-    end_pos = formatted_input[2..3]
-    [start_pos, end_pos]
+  def parse_input(str)
+    nums = str.split('').map(&:to_i)
+    [ [ nums[0], nums[1] ], [ nums[2], nums[3] ] ]
   end
 
   def switch_players!
-    players.push(players.shift)
+    players.reverse!
   end
 end
 

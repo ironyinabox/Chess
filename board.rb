@@ -42,9 +42,9 @@ class Board
 
   def in_check?(color)
     king_pos = find_king(color)
-    rows.flatten.each do |node|
-      unless node.nil?
-        return true if node.color != color && node.moves.include?(king_pos)
+    rows.flatten.each do |tile|
+      unless tile.nil?
+        return true if tile.color != color && tile.moves.include?(king_pos)
       end
     end
 
@@ -52,9 +52,9 @@ class Board
   end
 
   def find_king(color)
-    rows.flatten.select do |node|
-      unless node.nil?
-        return node.pos if node.is_a?(King) && node.color == color
+    rows.flatten.select do |tile|
+      unless tile.nil?
+        return tile.pos if tile.is_a?(King) && tile.color == color
       end
     end
   end
@@ -125,8 +125,10 @@ class Board
     grid
   end
 
-  def cols
-    grid.transpose
+  def checkmate?(color)
+    rows.flatten.each do |tile|
+      return false if !tile.nil? && tile.color == color && tile.valid_moves.size > 0
+    end
   end
 end
 
