@@ -21,8 +21,9 @@ class Game
     begin
       new_move = get_move
       board.move(new_move.first, new_move.last)
-    rescue
+    rescue InvalidMoveError => e
       puts "That is not a valid move"
+      puts "#{e}"
       retry
     end
 
@@ -36,7 +37,13 @@ class Game
 
   def get_move
     prompt
-    parse_input(gets.chomp)
+    input = gets.chomp
+    until valid_input(input)
+      puts "That is an invalid move, try again:"
+      input = gets.chomp
+    end
+
+    [parse_input(input).take(2), parse_input(input).drop(2)]
   end
 
   def prompt
@@ -45,16 +52,16 @@ class Game
   end
 
   def valid_input(input)
-    board[input[0]].color == current_player
+    digits = parse_input(input)
+    digits.length == 4 && digits.all? { |x| x.between?(0,7)}
   end
 
   def current_player
     players.first
   end
 
-  def parse_input(str)
-    nums = str.split('').map(&:to_i)
-    [ [ nums[0], nums[1] ], [ nums[2], nums[3] ] ]
+  def parse_input(input)
+    input.scan(/\d/).map(&:to_i)
   end
 
   def switch_players!

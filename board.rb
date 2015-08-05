@@ -42,21 +42,11 @@ class Board
 
   def in_check?(color)
     king_pos = find_king(color)
-    rows.flatten.each do |tile|
-      unless tile.nil?
-        return true if tile.color != color && tile.moves.include?(king_pos)
-      end
-    end
-
-    false
+    pieces.any? { |tile| tile.color != color && tile.moves.include?(king_pos) }
   end
 
   def find_king(color)
-    rows.flatten.select do |tile|
-      unless tile.nil?
-        return tile.pos if tile.is_a?(King) && tile.color == color
-      end
-    end
+    pieces.each { |tile| return tile.pos if tile.is_a?(King) && tile.color == color }
   end
 
   def assign_color
@@ -86,6 +76,7 @@ class Board
   end
 
   def render
+    puts ""
     puts "   0 1 2 3 4 5 6 7"
     puts "  ________________"
     rows.each_with_index do |row, row_idx|
@@ -112,10 +103,8 @@ class Board
 
   def dup
     dup_board = Board.new
-    dup_board.grid = rows.map do |row|
-      row.map do |tile|
-        tile.dup(dup_board) unless tile.nil?
-      end
+    pieces.each do |piece|
+      piece.dup(dup_board)
     end
 
     dup_board
@@ -125,10 +114,22 @@ class Board
     grid
   end
 
+  def pieces
+    rows.flatten.compact
+  end
+
+  # def black_pieces
+  #   p
+  #   rows.flatten.compact.select { |piece| piece.color == :black}
+  # end
+  #
+  # def white_pieces
+  #   rows.flatten.compact.select { |piece| piece.color == :white}
+  # end
+
   def checkmate?(color)
-    rows.flatten.each do |tile|
-      return false if !tile.nil? && tile.color == color && tile.valid_moves.size > 0
-    end
+    pieces.each { |piece| return false if piece.color == color && piece.valid_moves.size > 0 }
+    true
   end
 end
 

@@ -61,5 +61,6 @@ class Piece
 
   def dup(dup_board)
     dup_piece = self.class.new(pos.dup, dup_board, color)
+    dup_board[dup_piece.pos] = dup_piece
   end
 end

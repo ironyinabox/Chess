@@ -2,16 +2,16 @@ class Pawn < Piece
   attr_accessor :moved
 
   DELTA = [
-            [ 1,  0], # black moves
-            [-1,  0] # white moves
-          ]
+    [ 1,  0], # black moves
+    [-1,  0] # white moves
+  ]
   CAPTURE_MOVES = [
     [ [ 1, -1], [ 1,  1] ], #black moves
     [ [-1, -1], [-1,  1] ] #white moves
-                  ]
+  ]
   DOUBLE_MOVE = [
-            [ 2,  0], #black
-            [-2,  0]  #white
+    [ 2,  0], #black
+    [-2,  0]  #white
   ]
 
   def initialize(pos, board, color)
@@ -37,6 +37,10 @@ class Pawn < Piece
     self.moved = true
   end
 
+  # if not on row 6 or 1, no double move
+  # make hashes for color deltas
+  ### keep in mind unicode box drawing
+  ## refactor
   def moves
     result = []
 
