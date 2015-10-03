@@ -8,6 +8,6 @@ class Bishop < SlidingPiece
   ]
 
   def to_s
-    colorize_output("B")
+    colorize_output(" ♝ ")
   end
 end

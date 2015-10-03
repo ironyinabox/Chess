@@ -12,6 +12,6 @@ class Knight < SteppingPiece
   ]
 
   def to_s
-    colorize_output("N")
+    colorize_output(" ♞ ")
   end
 end

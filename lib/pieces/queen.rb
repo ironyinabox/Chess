@@ -1,5 +1,4 @@
-class King < SteppingPiece
-
+class Queen < SlidingPiece
   DELTAS = [
      [-1, -1],
      [-1,  0],
@@ -12,6 +11,6 @@ class King < SteppingPiece
    ]
 
    def to_s
-     colorize_output("K")
+     colorize_output(" ♛ ")
    end
 end

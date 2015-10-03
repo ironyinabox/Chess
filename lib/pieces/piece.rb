@@ -33,8 +33,6 @@ class Piece
   end
 
   def move_into_check?(move_pos)
-    return false unless moves.include?(move_pos)
-
     dup_board = board.dup
     dup_board.move!(pos, move_pos)
     dup_board.in_check?(color)
@@ -45,11 +43,10 @@ class Piece
   end
 
   def colorize_output(str)
-    if color == :white
-      str.colorize(:color => :red, :mode => :bold)
-    else
-      str.colorize(:color => :black, :mode => :bold)
-    end
+    options = {}
+    options[:color] = (color == :white ? :red : :black)
+    options[:background] = (self.pos.inject(:+) % 2 == 0 ? :light_white : :white)
+    str.colorize(options)
   end
 
   def calc_new_move(d_pos)

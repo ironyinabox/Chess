@@ -8,6 +8,6 @@ class Rook < SlidingPiece
   ]
 
   def to_s
-    colorize_output("R")
+    colorize_output(" ♜ ")
   end
 end

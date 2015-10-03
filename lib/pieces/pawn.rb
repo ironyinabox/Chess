@@ -66,6 +66,6 @@ class Pawn < Piece
   end
 
   def to_s
-    colorize_output("P")
+    colorize_output(" ♟ ")
   end
 end
