@@ -41,9 +41,9 @@ class Board
         if piece.is_a?(Piece)
           print piece.to_s
         elsif (row_idx + col_idx) % 2 == 0
-          print "   ".colorize(background: :light_white)
-        else
           print "   ".colorize(background: :white)
+        else
+          print "   ".colorize(background: :green)
         end
       end
 

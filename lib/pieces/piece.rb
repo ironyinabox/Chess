@@ -45,7 +45,7 @@ class Piece
   def colorize_output(str)
     options = {}
     options[:color] = (color == :white ? :red : :black)
-    options[:background] = (self.pos.inject(:+) % 2 == 0 ? :light_white : :white)
+    options[:background] = (self.pos.inject(:+) % 2 == 0 ? :white : :green)
     str.colorize(options)
   end
 
