@@ -6,5 +6,5 @@ This is a two-player chess game written in Ruby and played in the console. Valid
 
 ## How To Play
 Download or clone the repo, then from the chess directory, run
-'ruby lib/chess.rb'.
+'ruby lib/game.rb'.
 If you don't see colors, run bundle install first!
